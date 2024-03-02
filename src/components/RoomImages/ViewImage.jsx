@@ -14,17 +14,9 @@ import {
 const ViewImage = () => {
   const [imgUrl, setImgUrl] = useState([]);
 
-  //   const handleClick = () => {
-
-  //     getDownloadURL(value.ref).then((url) => {
-  //       setImgUrl((data) => [...data, url]);
-  //     });
-
-  //   };
-
   useEffect(() => {
     listAll(ref(imageDb, "files")).then((imgs) => {
-      console.log(imgs);
+      //console.log(imgs);
       imgs.items.forEach((val) => {
         getDownloadURL(val).then((url) => {
           setImgUrl((data) => [...data, url]);
@@ -35,11 +27,14 @@ const ViewImage = () => {
 
   return (
     <div className="App">
-      <div className="max-w-xl mx-auto">
+      <div className=" mx-auto">
         <Carousel>
           <CarouselContent>
-            {imgUrl.map((dataVal) => (
-              <CarouselItem className="shadow-md border rounded-md h-96">
+            {imgUrl.map((dataVal, index) => (
+              <CarouselItem
+                className="basis-1/3 shadow-md border rounded-md h-96 "
+                key={index}
+              >
                 <img
                   src={dataVal}
                   className="w-full h-full object-cover object-center"

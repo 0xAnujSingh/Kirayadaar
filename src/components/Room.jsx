@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../../@/components/ui/card";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "../../@/components/ui/card";
 import { useOutletContext, useParams } from "react-router";
 import RoomService from "./Services/RoomService";
 import TenantService from "./Services/TenantService";
@@ -10,7 +16,7 @@ import { collection, increment } from "firebase/firestore";
 import { db } from "../firebase";
 import TransactionService from "./Services/TransactionService";
 import Transactions from "./Transactions";
-
+import ViewImage from "./RoomImages/ViewImage";
 
 export function RoomCard({ room }) {
   return (
@@ -53,7 +59,6 @@ export function RoomCard({ room }) {
 }
 
 function TenantCard({ tenant }) {
-  
   return (
     <Card>
       <CardHeader>
@@ -92,7 +97,6 @@ const Room = () => {
   const [room, setRoom] = useState({});
 
   const [existingTenant, setExistingTenant] = useState();
- 
 
   const outlet = useOutletContext();
 
@@ -188,7 +192,7 @@ const Room = () => {
     const price = 10;
     const transaction = {
       item: "electricity",
-      quantity: quantity,     
+      quantity: quantity,
       type: "Debit",
       price: price,
       amount: quantity * price,
@@ -201,14 +205,11 @@ const Room = () => {
 
   return (
     <div className="grid grid-cols-3 gap-4">
-      <div className="col-span-3">
-        
-      </div>
+      <div className="col-span-3">{!existingTenant && <ViewImage />}</div>
       <div>
         <RoomCard room={room} />
         <br />
         {room.TenantId && <TenantCard tenant={existingTenant} />}
-
       </div>
 
       <div className="col-span-2">
@@ -218,34 +219,31 @@ const Room = () => {
 
         {room.TenantId && (
           <div>
-            
             <Card>
               <CardHeader>
-              <div className="flex flex-row align-middle">
-              <CardTitle className="pb-0">
-                Transactions
-              </CardTitle>
-              <div className="grow"></div>
-              <div className="flex -mt-1">
-                {isRoomTenant() && <TenantActions tenant={existingTenant} />}
-                {isRoomOwner() && room.TenantId && (
-                  <RoomOwnerActions
-                    room={room}
-                    updateUnit={(unit) => updateUnit(unit)}
-                    generateRent={(months) => generateRent(months)}
-                  />
-                )}
-              </div>
-            </div>
-              
+                <div className="flex flex-row align-middle">
+                  <CardTitle className="pb-0">Transactions</CardTitle>
+                  <div className="grow"></div>
+                  <div className="flex -mt-1">
+                    {isRoomTenant() && (
+                      <TenantActions tenant={existingTenant} />
+                    )}
+                    {isRoomOwner() && room.TenantId && (
+                      <RoomOwnerActions
+                        room={room}
+                        updateUnit={(unit) => updateUnit(unit)}
+                        generateRent={(months) => generateRent(months)}
+                      />
+                    )}
+                  </div>
+                </div>
               </CardHeader>
               <CardContent>
-            <Transactions tenantId={room.TenantId} />
-            </CardContent>
+                <Transactions tenantId={room.TenantId} />
+              </CardContent>
             </Card>
           </div>
         )}
-        
       </div>
     </div>
   );

@@ -12,6 +12,7 @@ import Room from "./components/Room";
 // import FirebaseImageUpload from "./components/RoomImage/FirebaseImageUpload";
 import UploadImage from "./components/RoomImages/UploadImage";
 import RoomImage from "./components/RoomImages/ViewImage";
+import CalenderDialog from "./components/CalenderDialog";
 
 function App() {
   const [user, setUser] = useState(undefined);
@@ -45,6 +46,7 @@ function App() {
           {/* <Route path="img" element={<FirebaseImageUpload />}></Route> */}
           <Route path="uploadimage" element={<UploadImage />}></Route>
           <Route path="roomimage" element={<RoomImage />}></Route>
+          <Route path="dialog" element={<CalenderDialog />}></Route>
           <Route path="*" element={<div>Page not Found</div>}></Route>
         </Routes>
       </BrowserRouter>

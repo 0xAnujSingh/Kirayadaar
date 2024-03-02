@@ -12,6 +12,15 @@ import RoomService from "./Services/RoomService";
 import { Alert } from "../../@/components/ui/alert";
 
 import ViewImage from "./RoomImages/ViewImage";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogTitle,
+  DialogTrigger,
+} from "@radix-ui/react-dialog";
+import { DialogHeader } from "../../@/components/ui/dialog";
+import CalenderDialog from "./CalenderDialog";
 
 function ViewTenant({ tenant }) {
   return <p>{tenant.roomId}</p>;
@@ -32,8 +41,7 @@ const AddNewTenant = () => {
     setTenantData({ ...tenantData, [e.target.name]: e.target.value });
   };
 
-  const submitData = async () => {
-    const { dateOfJoining } = tenantData;
+  const submitData = async (dateOfJoining) => {
     if (!dateOfJoining) {
       alert("Please fill the date");
     }
@@ -42,9 +50,7 @@ const AddNewTenant = () => {
     newTenantData.userName = outlet.user.displayName;
     newTenantData.userId = outlet.user.uid;
     newTenantData.roomId = params.id;
-    newTenantData.dateOfJoining = new Date(
-      Date.parse(tenantData.dateOfJoining)
-    );
+    newTenantData.dateOfJoining = dateOfJoining; //humne calenderDialog me already dateofjoing ko parse kara diya hai to hum yaha usko direct recive karenge
     newTenantData.state = "requested";
     await TenantService.addTenant(dbRef, tenantData)
       .then(() => {
@@ -83,22 +89,24 @@ const AddNewTenant = () => {
   return (
     <div className="w-full ">
       {/* {params.id} */}
-      {!existingTenant && <ViewImage />}
-<br/>
+
       {!existingTenant && (
-        <Card className="w-60 p-5">
+        <Card className="p-5">
           <CardTitle >Apply to join</CardTitle>
           <Form>
-            <Label>Date Of joining</Label>
-            <Input
+            <Label>Joining Date</Label>
+            {/* <Input
               name="dateOfJoining"
               placeholer="Date Of Joining"
               type="date"
               value={tenantData.dateOfJoining}
               onChange={changeHandler}
-            />
+            /> */}
           </Form>
-          <Button onClick={submitData} style={{marginTop:"10px"}}>Submit</Button>
+          <CalenderDialog submitData={submitData} />
+          {/* <Button onClick={submitData} style={{ marginTop: "10px" }}>
+            Submit
+          </Button> */}
         </Card>
       )}
 
