@@ -1,15 +1,20 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../../@/components/ui/button";
 import { collection } from "@firebase/firestore";
 import RoomService from "./Services/RoomService";
 import { db } from "../firebase";
 import { useOutletContext } from "react-router";
 import { toast } from "react-toastify";
-
+import { onSnapshot } from "@firebase/firestore";
 import UploadImage from "./RoomImages/UploadImage";
+
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { v4 } from "uuid";
+import { imageDb } from "../firebase";
 
 const NewRoom = () => {
   const outlet = useOutletContext();
+  const [img, setImg] = useState("");
   const [room, setRoom] = useState({
     roomNo: "",
     rent: "",
@@ -45,6 +50,16 @@ const NewRoom = () => {
             windows: "",
             roomSize: "",
           });
+          console.log(img);
+          if (img !== null) {
+            const imgRef = ref(imageDb, `files/${docRef.id}/${v4()}`);
+            uploadBytes(imgRef, img).then((value) => {
+              getDownloadURL(value.ref);
+              console.log("File uploaded");
+            });
+          } else {
+            console.log("File is not uploaded");
+          }
         })
         .catch((error) => {
           console.log(error);
@@ -53,7 +68,7 @@ const NewRoom = () => {
     } else {
       console.log("please fill the full form");
     }
-    toast("Your data is successfull submitted");
+    // toast("Your data is successfull submitted");
   };
 
   return (
@@ -63,6 +78,7 @@ const NewRoom = () => {
         Lorem Ipsum is simply dummy text of the printing and typesetting
         industry
       </p>
+
       <form
         className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
         onSubmit={submitData}
@@ -164,11 +180,18 @@ const NewRoom = () => {
             onChange={onChangeHandler}
           />
         </div>
+        <div>
+          <p>Room Image</p>
+          <input type="file" multiple onChange={(e) => setImg(e.target.files[0])} />
+          
+        </div>
+
+        <br />
         <Button onClick={submitData}>Submit</Button>
       </form>
       <div>
-        <p>Room Image</p>
-        <UploadImage />
+        {/* <p>Room Image</p> */}
+        {/* <UploadImage /> */}
       </div>
     </div>
   );

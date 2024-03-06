@@ -18,6 +18,7 @@ import TransactionService from "./Services/TransactionService";
 import Transactions from "./Transactions";
 import ViewImage from "./RoomImages/ViewImage";
 
+// RoomCard is come form ViewRooms.jsx
 export function RoomCard({ room }) {
   return (
     <Card>
@@ -94,6 +95,7 @@ function RoomOwnerActions({ room, updateUnit, generateRent }) {
 
 const Room = () => {
   const params = useParams();
+
   const [room, setRoom] = useState({});
 
   const [existingTenant, setExistingTenant] = useState();
@@ -205,7 +207,9 @@ const Room = () => {
 
   return (
     <div className="grid grid-cols-3 gap-4">
-      <div className="col-span-3">{!existingTenant && <ViewImage />}</div>
+      <div className="col-span-3">
+        {!existingTenant && <ViewImage  roomId={params.id}/>}
+      </div>
       <div>
         <RoomCard room={room} />
         <br />

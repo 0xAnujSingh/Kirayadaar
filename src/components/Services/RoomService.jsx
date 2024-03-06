@@ -19,6 +19,7 @@ class RoomService {
     return addDoc(
       colRef,
       Object.assign({ roomCreatedAt: new Date() }, newRoom)
+      
     );
   };
 

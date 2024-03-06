@@ -6,9 +6,9 @@ import RoomService from "./Services/RoomService";
 import { Button } from "../../@/components/ui/button";
 
 const ViewRequests = (props) => {
-  console.log(props);
+  //console.log(props);
   const { roomId } = props;
-  console.log(roomId);
+  //console.log(roomId);
   const [requests, setRequests] = useState([]);
   //console.log(requests)
 
@@ -17,7 +17,7 @@ const ViewRequests = (props) => {
   }, []);
 
   const getAllRequests = () => {
-    console.log(roomId);
+    //console.log(roomId);
     const q = query(TenantService.ref(), where("roomId", "==", roomId));
     onSnapshot(q, (snapshot) => {
       setRequests(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
@@ -30,7 +30,7 @@ const ViewRequests = (props) => {
       alert("Only applications in requested state can be accepted");
       return;
     }
-    console.log(request.id);
+    //console.log(request.id);
 
     await TenantService.updateTenant(request.id, { state: "accepted" });
     await RoomService.updateRoom(request.roomId, { TenantId: request.id });

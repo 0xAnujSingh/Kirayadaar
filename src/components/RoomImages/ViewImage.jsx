@@ -1,8 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { imageDb } from "../../firebase";
-import { Button } from "../../../@/components/ui/button";
-import { ref, uploadBytes, listAll, getDownloadURL } from "firebase/storage";
-import { v4 } from "uuid";
+import { ref, listAll, getDownloadURL } from "firebase/storage";
+
 import {
   Carousel,
   CarouselContent,
@@ -11,11 +10,11 @@ import {
   CarouselNext,
 } from "../../../@/components/ui/carousel";
 
-const ViewImage = () => {
+const ViewImage = ({ roomId }) => {
   const [imgUrl, setImgUrl] = useState([]);
 
-  useEffect(() => {
-    listAll(ref(imageDb, "files")).then((imgs) => {
+  function listImages() {
+    listAll(ref(imageDb, `files/${roomId}`)).then((imgs) => {
       //console.log(imgs);
       imgs.items.forEach((val) => {
         getDownloadURL(val).then((url) => {
@@ -23,6 +22,14 @@ const ViewImage = () => {
         });
       });
     });
+  }
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      listImages();
+    }, 5000);
+    return ()=>{
+      clearTimeout(timer)
+    }
   }, []);
 
   return (

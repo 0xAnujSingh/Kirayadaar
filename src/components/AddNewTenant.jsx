@@ -2,16 +2,12 @@ import React, { useEffect, useState } from "react";
 import { Card, CardTitle } from "../../@/components/ui/card";
 import { Label } from "../../@/components/ui/label";
 import { Form } from "../../@/components/ui/form";
-import { Input } from "../../@/components/ui/input";
-import { Button } from "../../@/components/ui/button";
 import { db } from "../firebase";
 import { collection, onSnapshot, query, where, and } from "@firebase/firestore";
 import { useOutletContext, useParams } from "react-router";
 import TenantService from "./Services/TenantService";
 import RoomService from "./Services/RoomService";
 import { Alert } from "../../@/components/ui/alert";
-
-import ViewImage from "./RoomImages/ViewImage";
 import {
   Dialog,
   DialogContent,
@@ -92,7 +88,7 @@ const AddNewTenant = () => {
 
       {!existingTenant && (
         <Card className="p-5">
-          <CardTitle >Apply to join</CardTitle>
+          <CardTitle>Apply to join</CardTitle>
           <Form>
             <Label>Joining Date</Label>
             {/* <Input

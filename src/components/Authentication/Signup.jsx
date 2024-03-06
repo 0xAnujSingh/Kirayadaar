@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Input } from "../../../@/components/ui/input";
-import { Label } from "@radix-ui/react-label";
 import { createUserWithEmailAndPassword, updateProfile } from "@firebase/auth";
 import { Button } from "../../../@/components/ui/button";
 import { auth } from "../../firebase";
@@ -17,7 +16,8 @@ const Signup = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
-  const handleSubmission = () => {
+  const handleSubmission = (e) => {
+    e.preventDefault();
     if (!values.name || !values.email || !values.password) {
       setErrorMsg("Please fill all the fields");
       return;
@@ -41,51 +41,69 @@ const Signup = () => {
       });
   };
   return (
-    <Form className="container" onChange={handleSubmission}>
-      <div className="innerbox">
-        <h1 className="heading">Sign Up</h1>
-        <Label>Name</Label>
-        <Input
-          name="name"
-          placeholder="Name"
-          type="text"
-          onChange={(e) => {
-            setValues((prev) => ({ ...prev, name: e.target.value }));
-          }}
-        />
-        <Label>Email</Label>
-        <Input
-          name="email"
-          placeholder="Email"
-          type="email"
-          onChange={(e) => {
-            setValues((prev) => ({ ...prev, email: e.target.value }));
-          }}
-        />
-        <Label>Password</Label>
-        <Input
-          name="password"
-          placeholder="Password"
-          type="password"
-          onChange={(e) => {
-            setValues((prev) => ({ ...prev, password: e.target.value }));
-          }}
-        />
+    <div>
+      <div className="w-full max-w-xs mx-auto space-y-4">
+        <h1 className="text-center text-xl font-semibold">Sign Up</h1>
+        <form
+          className="bg-white shadow-md rounded px-8 pt-6 pb-8 mb-4"
+          onChange={(e) => handleSubmission}
+        >
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Name
+          </label>
+          <input
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            name="name"
+            placeholder="Name"
+            type="text"
+            onChange={(e) => {
+              setValues((prev) => ({ ...prev, name: e.target.value }));
+            }}
+          />
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Email
+          </label>
+          <input
+            className="shadow appearance-none border rounder w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+            name="email"
+            placeholder="Email"
+            type="email"
+            onChange={(e) => {
+              setValues((prev) => ({ ...prev, email: e.target.value }));
+            }}
+          />
+          <label className="block text-gray-700 text-sm font-bold mb-2">
+            Password
+          </label>
+          <input
+            className="shadow appearance-none border rounder w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
+            name="password"
+            placeholder="Password"
+            type="password"
+            onChange={(e) => {
+              setValues((prev) => ({ ...prev, password: e.target.value }));
+            }}
+          />
 
-        <div className="footer">
-          <b className="error">{errorMsg}</b>
-          <Button onClick={handleSubmission} disabled={submitButtonDisabled}>
-            Signup
-          </Button>
-          <p>
-            Already have an account?{""}
-            <span>
-              <Link to="/login">Login</Link>
-            </span>
-          </p>
-        </div>
+          <div className="footer ">
+            <b className="error">{errorMsg}</b>
+            <Button
+              className="mb-2"
+              onClick={handleSubmission}
+              disabled={submitButtonDisabled}
+            >
+              Signup
+            </Button>
+            <p>
+              Already have an account?{""}
+              <span>
+                <Link to="/login">Login</Link>
+              </span>
+            </p>
+          </div>
+        </form>
       </div>
-    </Form>
+    </div>
   );
 };
 
