@@ -19,15 +19,15 @@ const ViewRooms = () => {
 
   return (
     <div className="grid grid-cols-4 gap-4">
-        {rooms.map((room) => (
-          <Link
-            key={room.id}
-            style={{ textDecoration: "none" }}
-            to={`/rooms/${room.id}`}
-          >
-            <RoomCard room={room} />
-          </Link>
-        ))}
+      {rooms.map((room) => (
+        <Link
+          key={room.id}
+          style={{ textDecoration: "none" }}
+          to={`/rooms/${room.id}`}
+        >
+          <RoomCard room={room} />
+        </Link>
+      ))}
     </div>
   );
 };

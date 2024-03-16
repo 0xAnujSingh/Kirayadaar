@@ -16,6 +16,8 @@ const Signup = () => {
   const [errorMsg, setErrorMsg] = useState("");
   const [submitButtonDisabled, setSubmitButtonDisabled] = useState(false);
 
+  const [showPassword, setShowPassword] = useState(false);
+
   const handleSubmission = (e) => {
     e.preventDefault();
     if (!values.name || !values.email || !values.password) {
@@ -79,11 +81,25 @@ const Signup = () => {
             className="shadow appearance-none border rounder w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline mb-2"
             name="password"
             placeholder="Password"
-            type="password"
+            //type="password"
+            type={showPassword ? "text" : "password"}
             onChange={(e) => {
               setValues((prev) => ({ ...prev, password: e.target.value }));
             }}
           />
+
+          <div>
+            <input
+              className="w-4 mr-1 mb-4 items-center"
+              id="checkbox"
+              type="checkbox"
+              value={showPassword}
+              onChange={() => setShowPassword((prev) => !prev)}
+            />
+            <label className="text-gray-700 text-sm font-bold mb-2 mr-2">
+              Show Password
+            </label>
+          </div>
 
           <div className="footer ">
             <b className="error">{errorMsg}</b>

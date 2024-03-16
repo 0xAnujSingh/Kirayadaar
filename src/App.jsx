@@ -47,6 +47,7 @@ function App() {
           <Route path="uploadimage" element={<UploadImage />}></Route>
           <Route path="viewimage" element={<ViewImage />}></Route>
           <Route path="dialog" element={<CalenderDialog />}></Route>
+          
           <Route path="*" element={<div>Page not Found</div>}></Route>
         </Routes>
       </BrowserRouter>

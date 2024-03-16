@@ -1,12 +1,11 @@
-import React, { useEffect, useState } from "react";
+import React, {  useState } from "react";
 import { Button } from "../../@/components/ui/button";
 import { collection } from "@firebase/firestore";
 import RoomService from "./Services/RoomService";
 import { db } from "../firebase";
 import { useOutletContext } from "react-router";
-import { toast } from "react-toastify";
-import { onSnapshot } from "@firebase/firestore";
-import UploadImage from "./RoomImages/UploadImage";
+
+import { faker } from "@faker-js/faker";
 
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { v4 } from "uuid";
@@ -14,14 +13,14 @@ import { imageDb } from "../firebase";
 
 const NewRoom = () => {
   const outlet = useOutletContext();
-  const [img, setImg] = useState("");
+  const [imgs, setImgs] = useState([]);
   const [room, setRoom] = useState({
-    roomNo: "",
-    rent: "",
-    unit: "",
-    address: "",
-    windows: "",
-    roomSize: "",
+    roomNo: faker.number.int(),
+    rent: faker.number.int(),
+    unit: faker.number.int(),
+    address: faker.location.street(),
+    windows: 2,
+    roomSize: 200,
   });
 
   const onChangeHandler = (e) => {
@@ -40,6 +39,8 @@ const NewRoom = () => {
       newRoom.rent = Number(room.rent);
       newRoom.owner = outlet.user.uid;
 
+      console.log(imgs);
+
       await RoomService.addRoom(dbRef, room)
         .then((docRef) => {
           setRoom({
@@ -50,15 +51,17 @@ const NewRoom = () => {
             windows: "",
             roomSize: "",
           });
-          console.log(img);
-          if (img !== null) {
-            const imgRef = ref(imageDb, `files/${docRef.id}/${v4()}`);
-            uploadBytes(imgRef, img).then((value) => {
-              getDownloadURL(value.ref);
-              console.log("File uploaded");
-            });
-          } else {
-            console.log("File is not uploaded");
+
+          for (let img of imgs) {
+            if (img !== null) {
+              const imgRef = ref(imageDb, `files/${docRef.id}/${v4()}`);
+              uploadBytes(imgRef, img).then((value) => {
+                getDownloadURL(value.ref);
+                console.log("File uploaded");
+              });
+            } else {
+              console.log("File is not uploaded");
+            }
           }
         })
         .catch((error) => {
@@ -182,8 +185,11 @@ const NewRoom = () => {
         </div>
         <div>
           <p>Room Image</p>
-          <input type="file" multiple onChange={(e) => setImg(e.target.files[0])} />
-          
+          <input
+            type="file"
+            multiple
+            onChange={(e) => setImgs(e.target.files)}
+          />
         </div>
 
         <br />

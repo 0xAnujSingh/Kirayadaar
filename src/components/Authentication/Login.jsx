@@ -5,6 +5,7 @@ import { signInWithEmailAndPassword } from "@firebase/auth";
 import { Button } from "../../../@/components/ui/button";
 import { useNavigate } from "react-router";
 import { Link } from "react-router-dom";
+import { toast } from "react-hot-toast";
 
 const Login = () => {
   const navigate = useNavigate();
@@ -39,6 +40,8 @@ const Login = () => {
         setErrorMsg(err.message);
         console.log("err.-", err.message);
       });
+
+    toast.success("Succesfully logged in");
   };
 
   return (

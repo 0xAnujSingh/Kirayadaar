@@ -17,6 +17,7 @@ import { db } from "../firebase";
 import TransactionService from "./Services/TransactionService";
 import Transactions from "./Transactions";
 import ViewImage from "./RoomImages/ViewImage";
+import { toast } from "react-hot-toast";
 
 // RoomCard is come form ViewRooms.jsx
 export function RoomCard({ room }) {
@@ -150,6 +151,7 @@ const Room = () => {
         tenantName: existingTenant.userName,
       };
       TransactionService.addTransaction(dbRef, transaction);
+      toast.success(`Your bill is paid ${billAmount}`);
       getRoomById(params.id);
     }
     return (
@@ -181,6 +183,7 @@ const Room = () => {
       tenantName: existingTenant.userName,
     };
     TransactionService.addTransaction(dbRef, transaction);
+    toast.success(`Rent updated to ${noOfMonths} month`);
     getRoomById(params.id);
   }
 
@@ -202,13 +205,14 @@ const Room = () => {
       tenantName: existingTenant.userName,
     };
     TransactionService.addTransaction(dbRef, transaction);
+    toast.success(`Unit updated to ${newUnit}`);
     getRoomById(params.id);
   }
 
   return (
     <div className="grid grid-cols-3 gap-4">
       <div className="col-span-3">
-        {!existingTenant && <ViewImage  roomId={params.id}/>}
+        {!existingTenant && <ViewImage roomId={params.id} />}
       </div>
       <div>
         <RoomCard room={room} />
